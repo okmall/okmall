@@ -1,0 +1,6 @@
+[application]
+name = "okmall"
+version = "0.1.0"
+authors = ["Michael Li <alimy@gility.net>"]
+description = "okmall"
+license = "Apache-2.0"
