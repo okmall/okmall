@@ -1,8 +1,16 @@
 package cmd
 
-import "github.com/okmall/okmall/pkg/logus"
+import (
+	"context"
+	"github.com/alimy/logus"
+	_ "github.com/gin-gonic/gin"
+	"github.com/okmall/okmall/pkg/config"
+)
+
+var AppContext = context.Background()
 
 func Run() {
-	logus.Debug("okmall start...")
+	config.LoadConfig(&AppContext, config.ConfigFilePath)
+	logus.Info("okmall start...")
 	// TODO
 }
