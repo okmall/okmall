@@ -10,6 +10,8 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/json-iterator/go v1.1.5
 	github.com/mattn/go-isatty v0.0.4 // indirect
+	github.com/spf13/cobra v0.0.3
+	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/ugorji/go/codec v0.0.0-20181209151446-772ced7fd4c2 // indirect
 	go.uber.org/zap v1.9.1
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect

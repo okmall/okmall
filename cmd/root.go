@@ -1,16 +1,26 @@
 package cmd
 
 import (
-	"context"
-	"github.com/alimy/logus"
-	_ "github.com/gin-gonic/gin"
-	"github.com/okmall/okmall/pkg/config"
+	"github.com/spf13/cobra"
 )
 
-var AppContext = context.Background()
+var (
+	// Used for flags.
+	cfgFile, userLicense string
 
-func Run() {
-	config.LoadConfig(&AppContext, config.ConfigFilePath)
-	logus.Info("okmall start...")
-	// TODO
+	rootCmd = &cobra.Command{
+		Use:   "okmall",
+		Short: "e-shop service agent",
+		Long:  `a e-shop service agent`,
+	}
+)
+
+func init() {
+	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(versionCmd)
+}
+
+// Execute executes the root command.
+func Execute() {
+	rootCmd.Execute()
 }
