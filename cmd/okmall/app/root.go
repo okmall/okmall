@@ -1,9 +1,7 @@
 package app
 
 import (
-	"github.com/alimy/logus"
 	"github.com/spf13/cobra"
-	"go.uber.org/zap"
 )
 
 var (
@@ -24,7 +22,5 @@ func init() {
 
 // Execute executes the root command.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		logus.Panic("execute failure", zap.Error(err))
-	}
+	rootCmd.Execute()
 }

@@ -2,9 +2,8 @@ package config
 
 import (
 	"context"
-	"github.com/alimy/logus"
 	"github.com/okmall/okmall/models"
-	"go.uber.org/zap"
+	"github.com/unisx/logus"
 )
 
 const (
@@ -24,9 +23,7 @@ func LoadConfig(ctx *context.Context, configFilePath string) {
 }
 
 func loadConfig(config *models.Config) {
-	if config.Debug {
-		logus.InDevelopment(zap.Development(), zap.AddCaller(), zap.AddCallerSkip(1))
-	} else {
+	if !config.Debug {
 		logus.InProduction()
 	}
 }

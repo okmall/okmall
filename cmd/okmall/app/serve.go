@@ -2,10 +2,10 @@ package app
 
 import (
 	"context"
-	"github.com/alimy/logus"
 	_ "github.com/gin-gonic/gin"
 	"github.com/okmall/okmall/pkg/config"
 	"github.com/spf13/cobra"
+	"github.com/unisx/logus"
 )
 
 var AppContext = context.Background()
@@ -17,7 +17,7 @@ const (
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "start to serve okmall service",
+	Short: "start to okmall service",
 	Long:  "this cmd will start a https server to provide okmall service",
 	Run:   serveRun,
 }
@@ -38,5 +38,5 @@ func init() {
 func serveRun(cmd *cobra.Command, args []string) {
 	// TODO
 	config.LoadConfig(&AppContext, config.DefaultConfigFilePath)
-	logus.Debug("start serve okmall service")
+	logus.Info("start okmall service")
 }
