@@ -1,4 +1,4 @@
-module github.com/alimy/okmall/cmd
+module github.com/okmall/okmall/cmd
 
 require (
 	github.com/spf13/cobra v0.0.3
