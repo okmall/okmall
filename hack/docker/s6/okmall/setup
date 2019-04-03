@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd /app/okmall
+
+# Link volumed data with app data
+ln -sfn /data/okmall/log  ./log
+ln -sfn /data/okmall/data ./data

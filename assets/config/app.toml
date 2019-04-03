@@ -1,0 +1,30 @@
+[application]
+name = "okmall"
+version = "0.1.0"
+authors = ["Michael Li <alimy@gility.net>"]
+description = "okmall agent"
+license = "Apache-2.0"
+
+[serve]
+schema = "http"
+addr = "127.0.0.1"
+port = 8013
+certFile = "cert.pem"
+keyFile = "key.pem"
+
+[database]
+# Either "MySQL", "postgreSQL" or "Sqlite3", you can connect to TiDB with MySQL protocol
+type = "Sqlite3"
+host = "127.0.0.1:3306"
+name = "okmall"
+user = "root"
+passwd = ""
+param = ""
+# For "postgres" only, either "disable", "require" or "verify-full"
+sslMode = "disable"
+# For "sqlite3" and "tidb", use absolute path when you start as service
+path = ":memory:"
+
+[redis]
+network = "tcp"
+addr = "127.0.0.1:6379"

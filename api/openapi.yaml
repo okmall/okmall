@@ -1,0 +1,516 @@
+openapi: 3.0.2
+servers:
+  - description: OkMall MINA Agent
+    url: http://localhost:8013/mina/v1
+info:
+  description: OkMall MINA Agent API
+  version: "1.0.0"
+  title: OkMall MINA Agent API
+  contact:
+    email: alimy@gility.net
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /index/index/:
+    get:
+      summary: Get main page data
+      operationId: IndexData
+      description: |
+        Get main page data all in one request
+      responses:
+        '200':
+          description: Main page data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexDataWrap'
+        '401':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+
+  /catalog/index/:
+    get:
+      summary: Get all catalog list
+      operationId: CatalogList
+      description: |
+        Get catalog list data
+      responses:
+        '200':
+          description: Catalog list data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogListDataWrap'
+          links:
+            currentCatalog:
+              $ref: '#/components/links/CatalogCurrentInfo'
+        '401':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+
+  /catalog/current/:
+    get:
+      summary: Get current catalog list
+      operationId: CatalogCurrent
+      description: |
+        Get current catalog list
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current catalog list data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogListDataWrap'
+        '401':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+components:
+  links:
+    CatalogCurrentInfo:
+      # return object of '#/components/schemas/CatalogListDataWrap
+      operationId: CatalogCurrent
+      parameters:
+        id: $response.body#/data/categoryList/id
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+        - errno
+        - errmsg
+        - data
+      properties:
+        errno:
+          type: integer
+          format: int32
+          example: 401
+        errmsg:
+          type: string
+          example: "Not Found"
+        data:
+          type: object
+
+    SuccessModel:
+      type: object
+      required:
+        - errno
+        - errmsg
+      properties:
+        errno:
+          type: integer
+          format: int32
+          example: 200
+        errmsg:
+          type: string
+          example: ""
+
+    IndexDataWrap:
+      allOf:
+        - $ref: '#/components/schemas/SuccessModel'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/IndexData'
+
+    CatalogListDataWrap:
+      allOf:
+        - $ref: '#/components/schemas/SuccessModel'
+        - type: object
+          required:
+            - data 
+          properties:
+            data:
+              $ref: '#/components/schemas/CatalogListData'
+
+    Goods:
+      type: object
+      required:
+        - id
+        - name
+        - list_pic_url
+        - retail_price
+      properties:
+        id:
+          type: string
+          example: 116011
+        name:
+          type: string
+          example: "蔓越莓曲奇 200克"
+        list_pic_url:
+          type: string
+          example: "http://yanxuan.nosdn.127.net/767b370d07f3973500db54900bcbd2a7.png"
+        retail_price:
+          type: number
+          format: float
+          example: 36
+
+    IndexData:
+      type: object
+      required:
+        - banner
+        - channel
+        - newGoodsList
+        - hotGoodsList
+        - brandList
+        - topicList
+        - categoryList
+      properties:
+        banner:
+          $ref: '#/components/schemas/IndexBanner'
+        channel:
+          $ref: '#/components/schemas/IndexChannel'
+        newGoodsList:
+          $ref: '#/components/schemas/IndexNewGoods'
+        hotGoodsList:
+          $ref: '#/components/schemas/IndexHotGoods'
+        brandList:
+          $ref: '#/components/schemas/IndexBrands'
+        topicList:
+          $ref: '#/components/schemas/IndexTopics'
+        categoryList:
+          $ref: '#/components/schemas/IndexCategories'
+
+    IndexBanner:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - ad_position_id
+          - media_type
+          - name
+          - link
+          - image_url
+          - content
+          - end_time
+          - enabled
+        properties:
+          id:
+            type: integer
+            format: int32
+            example: 1
+          ad_position_id:
+            type: integer
+            format: int32
+            example: 1
+          media_type:
+            type: integer
+            format: int32
+            example: 1
+          name:
+            type: string
+            example: "合作 谁是你的菜"
+          link:
+            type: string
+          image_url:
+            type: string
+            example: "http://yanxuan.nosdn.127.net/65091eebc48899298171c2eb6696fe27.jpg"
+          content:
+            type: string
+            example: "合作 谁是你的菜"
+          end_time: 
+            type: integer
+            format: int32
+            example: 0
+          enabled:
+            type: integer
+            format: int32
+            example: 1
+
+    IndexChannel:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - name
+          - url
+          - icon_url
+          - sort_order
+        properties:
+          id:
+            type: integer
+            format: int32
+            example: 1
+          name:
+            type: string
+            example: "居家"
+          url:
+            type: string
+            example: "/pages/category/category?id=1005000"
+          icon_url:
+            type: string
+            example: "http://ac-3yr0g9cz.clouddn.com/c031ea3cf575f885cd1c.png"
+          sort_order:
+            type: integer
+            format: int32
+            example: 1
+
+    IndexNewGoods:
+      type: array
+      items:
+        $ref: '#/components/schemas/Goods'
+
+    IndexHotGoods:
+      type: array
+      items:
+        type: object
+        allOf:
+        - $ref: '#/components/schemas/Goods'
+        - type: object
+          required:
+            - goods_brief
+          properties:
+            goods_brief:
+              type: string
+              example: "一级桑蚕丝，吸湿透气柔软"
+
+    IndexBrands:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - name
+          - list_pic_url
+          - simple_desc
+          - pic_url
+          - sort_order
+          - is_show
+          - floor_price
+          - app_list_pic_url
+          - is_new
+          - new_pic_u rl
+          - new_sort_order
+        properties:
+          id:
+            type: string
+            example: 1026000
+          name:
+            type: string
+            example: "CK制造商"
+          list_pic_url:
+            type: string
+            example: "http://yanxuan.nosdn.127.net/658f09b7ec522d31742b47b914d64338.png"
+          simple_desc:
+            type: string
+            example: 严选寻访Calvin Klein品牌的制造商，\n深入世界领带第一生产地，设计与品质并重，\n致力于给消费者带来优质典雅的服饰用品。"
+          pic_url:
+            type: string
+            example: "http://yanxuan.nosdn.127.net/fb139c9f11a10deb41beeb42aaad488e.png"
+          sort_order:
+            type: integer
+            format: int32
+            example: 1
+          is_show:
+            type: integer
+            format: int32
+            example: 1
+          floor_price:
+            type: number
+            format: float
+            example: 39
+          app_list_pic_url:
+            type: string
+            example: "http://yanxuan.nosdn.127.net/658f09b7ec522d31742b47b914d64338.png"
+          is_new:
+            type: integer
+            format: int32
+            example: 1
+          new_pic_url: 
+            type: string
+            example: "http://yanxuan.nosdn.127.net/76638fb8e6990aadf837ce761c3b7399.jpg"
+          new_sort_order:
+            type: integer
+            example: 1
+
+    IndexTopics:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - title
+          - content
+          - avatar
+          - item_pic_url
+          - subtitle
+          - topic_category_id
+          - price_info
+          - read_count
+          - scene_pic_url
+          - topic_template_id
+          - topic_tag_id
+          - sort_order
+          - is_show
+        properties:
+          id:
+            type: string
+            example: 314
+          title:
+            type: string
+            example: "关爱他成长的每一个足迹"
+          content:
+            type: string
+            example: |
+              "<img src=\"//yanxuan.nosdn.127.net/75c55a13fde5eb2bc2dd6813b4c565cc.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/e27e1de2b271a28a21c10213b9df7e95.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/9d413d1d28f753cb19096b533d53418d.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/64b0f2f350969e9818a3b6c43c217325.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/a668e6ae7f1fa45565c1eac221787570.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/0d4004e19728f2707f08f4be79bbc774.jpg\">\n    <img src=\"//yanxuan.nosdn.127.net/79ee021bbe97de7ecda691de6787241f.jpg\">"
+          avatar:
+            type: string
+            example: "https://yanxuan.nosdn.127.net/14943186689221563.png"
+          item_pic_url:
+            type: string
+            example: "https://yanxuan.nosdn.127.net/14943267735961674.jpg"
+          subtitle:
+            type: string
+            example: "专业运动品牌同厂，毛毛虫鞋买二送一"
+          topic_category_id:
+            type: integer
+            format: int32
+            example: 2
+          price_info:
+            type: number
+            format: float
+            example: 59.9
+          read_count:
+            type: string
+            example: "6.4k"
+          scene_pic_url:
+            type: string
+            example: "https://yanxuan.nosdn.127.net/14943267735961674.jpg"
+          topic_template_id:
+            type: string
+            example: 0
+          topic_tag_id:
+            type: string
+            example: 0
+          sort_order:
+            type: integer
+            format: int32
+            example: 1
+          is_show:
+            type: integer
+            format: int32
+            example: 1
+
+    IndexCategories:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - name
+          - goodsList
+        properties:
+          id:
+            type: string
+            example: 1023003
+          name:
+            type: string
+            example: "餐厨"
+          goodsList:
+            $ref: '#/components/schemas/Goods'
+
+    CatalogListData:
+      type: object
+      required:
+        - categoryList
+        - currentCategory
+      properties:
+        categoryList:
+          $ref: '#/components/schemas/CategoryList'
+        currentCategory:
+          $ref: '#/components/schemas/CategoryList'
+
+    CategoryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Category'
+
+    Category: &category
+      type: object
+      required:
+        - id
+        - name
+        - keywords
+        - front_desc
+        - parent_id
+        - sort_order
+        - show_index
+        - is_show
+        - banner_url
+        - icon_url
+        - image_url
+        - wap_banner_urlf
+        - level
+        - type
+        - front_name
+      properties:
+        id:
+          type: string
+          example: 1005000
+        name:
+          type: string
+          example: "布艺软装"
+        keywords:
+          type: string
+          example: ""
+        front_desc:
+          type: string
+          example: "回家，放松身心"
+        parent_id:
+          type: string
+          example: 1005001
+        sort_order:
+          type: integer
+          format: int32
+          example: 2
+        show_index:
+          type: integer
+          format: int32
+          example: 1
+        is_show:
+          type: integer
+          format: int32
+          example: 1
+        banner_url:
+          type: string
+          example: "http://yanxuan.nosdn.127.net/92357337378cce650797444bc107b0f7.jpg"
+        icon_url:
+          type: string
+          example:  "http://yanxuan.nosdn.127.net/a45c2c262a476fea0b9fc684fed91ef5.png"
+        img_url:
+          type: string
+          example: "http://nos.netease.com/yanxuan/f0d0e1a542e2095861b42bf789d948ce.jpg"
+        wap_banner_url:
+          type: string
+          example: "http://yanxuan.nosdn.127.net/e8bf0cf08cf7eda21606ab191762e35c.png"
+        level:
+          type: string
+          example: "L1"
+        front_name:
+          type: string
+          example:  "回家，放松身心"
+        subCategoryList:
+          $ref: '#/components/schemas/SubCategoryList'
+
+    SubCategoryList:
+      type: array
+      items:
+        << : *category
